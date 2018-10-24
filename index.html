@@ -10,82 +10,122 @@
 
 
 	<div class="app">
+
     <section class="winner__section">
       <div class="container winner__container">
         <div class="row winner__row">
           <div class="col winner__col winner__col_user-name">
-            <p>Winners: <span id="winner__user-name">...</span></p>
+            <p>Winners: <span id="winner__user-name" onclick="itemResultTableClick('id')">...</span></p>
           </div>
           <div class="col winner__col winner__col_button">
-            <button id="winner__button" onclick=""></button>
+            <button id="winner__button" onclick="">New winner</button>
           </div>
         </div>
       </div>
     </section>
+
     <section class="reg-form__section">
-      <div class="container reg-form__container">
-        <div class="row reg-form__row reg-form__row_form-title">
-          <div class="col reg-form__col reg-form__col_form-title">
-            <p class="reg-form__title">Registration form</p>
+      <form action="">
+        <div class="container reg-form__container">
+          <div class="row reg-form__row reg-form__row_form-title">
+            <div class="col reg-form__col reg-form__col_form-title">
+              <p class="reg-form__title">Registration form</p>
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-item">
+            <div class="col reg-form__col reg-form__col_user-name_p">
+              <p class="reg-form__input-title">Name: </p>
+            </div>
+            <div class="col reg-form__col reg-form__col_user-name_input">
+              <p class="warning__messages" id="reg-form__user-name_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-name_input" type="text">
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-item">
+            <div class="col reg-form__col reg-form__col_user-surname_p">
+              <p class="reg-form__input-title">Surname: </p>
+            </div>
+            <div class="col reg-form__col reg-form__col_user-surname_input">
+              <p class="warning__messages" id="reg-form__user-surname_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-surname_input" type="text">
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-item">
+            <div class="col reg-form__col reg-form__col_user-email_p">
+              <p class="reg-form__input-title">Email: </p>
+            </div>
+            <div class="col reg-form__col reg-form__col_user-email_input">
+              <p class="warning__messages" id="reg-form__user-email_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-email_input" type="text">
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-item">
+            <div class="col reg-form__col reg-form__col_user-phone_p">
+              <p class="reg-form__input-title">Phone: </p>
+            </div>
+            <div class="col reg-form__col reg-form__col_user-phone_input">
+              <p class="warning__messages" id="reg-form__user-phone_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-phone_input" type="text">
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-item">
+            <div class="col reg-form__col reg-form__col_user-birthday_p">
+              <p class="reg-form__input-title">Birthday: </p>
+            </div>
+            <div class="col reg-form__col reg-form__col_user-birthday_input">
+              <p class="warning__messages" id="reg-form__user-birthday_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-birthday_input" type="text">
+            </div>
+          </div>
+          <div class="row reg-form__row reg-form__row_form-button">
+            <div class="col reg-form__col reg-form__col_form-button">
+              <button id="form__button" onclick="">Save</button>
+            </div>
           </div>
         </div>
-        <div class="row reg-form__row reg-form__row_form-item">
-          <div class="col reg-form__col reg-form__col_user-name_p">
-            <p class="reg-form__input-title">Name: </p>
-          </div>
-          <div class="col reg-form__col reg-form__col_user-name_input">
-            <p class="warning__messages" id="reg-form__user-name_message">Обязательное поле</p>
-            <input class="reg-form__input" id="reg-form__user-name_input" type="text">
-          </div>
-        </div>
-        <div class="row reg-form__row reg-form__row_form-item">
-          <div class="col reg-form__col reg-form__col_user-surname_p">
-            <p class="reg-form__input-title">Surname: </p>
-          </div>
-          <div class="col reg-form__col reg-form__col_user-surname_input">
-            <p class="warning__messages" id="reg-form__user-surname_message">Обязательное поле</p>
-            <input class="reg-form__input" id="reg-form__user-surname_input" type="text">
-          </div>
-        </div>
-        <div class="row reg-form__row reg-form__row_form-item">
-          <div class="col reg-form__col reg-form__col_user-email_p">
-            <p class="reg-form__input-title">Email: </p>
-          </div>
-          <div class="col reg-form__col reg-form__col_user-email_input">
-            <p class="warning__messages" id="reg-form__user-email_message">Обязательное поле</p>
-            <input class="reg-form__input" id="reg-form__user-email_input" type="text">
-          </div>
-        </div>
-        <div class="row reg-form__row reg-form__row_form-item">
-          <div class="col reg-form__col reg-form__col_user-phone_p">
-            <p class="reg-form__input-title">Phone: </p>
-          </div>
-          <div class="col reg-form__col reg-form__col_user-phone_input">
-            <p class="warning__messages" id="reg-form__user-phone_message">Обязательное поле</p>
-            <input class="reg-form__input" id="reg-form__user-phone_input" type="text">
-          </div>
-        </div>
-        <div class="row reg-form__row reg-form__row_form-item">
-          <div class="col reg-form__col reg-form__col_user-birthday_p">
-            <p class="reg-form__input-title">Birthday: </p>
-          </div>
-          <div class="col reg-form__col reg-form__col_user-birthday_input">
-            <p class="warning__messages" id="reg-form__user-birthday_message">Обязательное поле</p>
-            <input class="reg-form__input" id="reg-form__user-birthday_input" type="text">
-          </div>
-        </div>
-      </div>
+      </form>
     </section>
+
     <section class="result-table__section">
       <div class="container result-table__container">
         <div class="row result-table__row result-table__row_table-title">
           <div class="col result-table__col result-table__col_table-title">
             <p class="result-table__title">Name</p>
           </div>
-          
+          <div class="col result-table__col result-table__col_table-title">
+            <p class="result-table__title">Surname</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-title">
+            <p class="result-table__title">Email</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-title">
+            <p class="result-table__title">Phone</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-title">
+            <p class="result-table__title">Birthday</p>
+          </div>
         </div>
+        <div class="row result-table__row result-table__row_table-item">
+          <div class="col result-table__col result-table__col_table-item">
+            <p class="result-table__item" onclick="itemResultTableClick('id')">name</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-item">
+            <p class="result-table__item" onclick="itemResultTableClick('id')">surname</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-item">
+            <p class="result-table__item" onclick="itemResultTableClick('id')">email</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-item">
+            <p class="result-table__item" onclick="itemResultTableClick('id')">phone</p>
+          </div>
+          <div class="col result-table__col result-table__col_table-item">
+            <p class="result-table__item" onclick="itemResultTableClick('id')">birthday</p>
+          </div>
+        </div>
+
       </div>
     </section>
+    
   </div>
 
 
