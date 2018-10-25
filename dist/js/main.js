@@ -2,6 +2,10 @@ function log(item) {
   console.log(item);
 }
 
+let handler = function() {
+  checkInput('email');
+}
+
 function checkInput(item) {
   // Проверяем конкретный Input формы
   let value = document.getElementById(`reg-form__user-${item}_input`).value;
@@ -16,12 +20,27 @@ function checkInput(item) {
         hideInputError(item);
       }
       break;
+    case 'email':
+      let email = document.getElementById(`reg-form__user-${item}_input`);
+      let emailLiveCheck = email.getAttribute('liveCheck');
+      if ( emailLiveCheck === 'false' ) {
+        email.addEventListener("input", handler);
+        email.setAttribute('liveCheck', 'true');
+      }
+      if ( value === '' ) {
+        showInputError(item, 'Обязательное поле');
+      } else if ( !( value.indexOf('@') != -1 && value.indexOf('.') != -1 ) || value.indexOf('.') + 1 === value.length ) {
+        showInputError(item, 'Неверный email');
+      } else {
+        hideInputError(item);
+      }
   }
 }
 
 function checkForm() {
   // Проверить всю форму при клике на кнопку Save
-  checkInput('name');
+  let items = ['name', 'surname', 'email', 'phone', 'birthday'];
+  items.forEach( item => checkInput(item) );
   return false;
 }
 

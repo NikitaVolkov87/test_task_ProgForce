@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" href="dist/css/main.css">
 </head>
-<body onload="load()">
+<body onload="">
 
 
 	<div class="app">
@@ -56,7 +56,7 @@
             </div>
             <div class="col reg-form__col reg-form__col_user-email_input">
               <p class="warning__messages hide" id="reg-form__user-email_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-email_input" type="text" oninput="checkInput('email')" onblur="checkInput('email')" onclick="event.target.select()">
+              <input class="reg-form__input" id="reg-form__user-email_input" type="text" onblur="checkInput('email')" onclick="event.target.select()" liveCheck="false">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
