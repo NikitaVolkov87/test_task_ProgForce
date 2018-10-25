@@ -37,8 +37,8 @@
               <p class="reg-form__input-title">Name: </p>
             </div>
             <div class="col reg-form__col reg-form__col_user-name_input">
-              <p class="warning__messages" id="reg-form__user-name_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-name_input" type="text">
+              <p class="warning__messages hide" id="reg-form__user-name_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-name_input" type="text" oninput="checkInput('name')" onblur="checkInput('name')" onclick="event.target.select()">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -46,8 +46,8 @@
               <p class="reg-form__input-title">Surname: </p>
             </div>
             <div class="col reg-form__col reg-form__col_user-surname_input">
-              <p class="warning__messages" id="reg-form__user-surname_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-surname_input" type="text">
+              <p class="warning__messages hide" id="reg-form__user-surname_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-surname_input" type="text" oninput="checkInput('surname')" onblur="checkInput('surname')" onclick="event.target.select()">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -55,8 +55,8 @@
               <p class="reg-form__input-title">Email: </p>
             </div>
             <div class="col reg-form__col reg-form__col_user-email_input">
-              <p class="warning__messages" id="reg-form__user-email_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-email_input" type="text">
+              <p class="warning__messages hide" id="reg-form__user-email_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-email_input" type="text" oninput="checkInput('email')" onblur="checkInput('email')" onclick="event.target.select()">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -64,8 +64,8 @@
               <p class="reg-form__input-title">Phone: </p>
             </div>
             <div class="col reg-form__col reg-form__col_user-phone_input">
-              <p class="warning__messages" id="reg-form__user-phone_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-phone_input" type="text">
+              <p class="warning__messages hide" id="reg-form__user-phone_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-phone_input" type="text" oninput="checkInput('phone')" onblur="checkInput('phone')" onclick="event.target.select()">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -73,15 +73,15 @@
               <p class="reg-form__input-title">Birthday: </p>
             </div>
             <div class="col reg-form__col reg-form__col_user-birthday_input">
-              <p class="warning__messages" id="reg-form__user-birthday_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-birthday_input" type="text">
+              <p class="warning__messages hide" id="reg-form__user-birthday_message">Обязательное поле</p>
+              <input class="reg-form__input" id="reg-form__user-birthday_input" type="text" oninput="checkInput('birthday')" onblur="checkInput('birthday')" onclick="event.target.select()">
             </div>
           </div>
         </div>
         <div class="container reg-form__container_button">
           <div class="row reg-form__row reg-form__row_form-button">
             <div class="col reg-form__col reg-form__col_form-button">
-              <button id="form__button" onclick="">Save</button>
+              <button id="form__button" onclick="return checkForm()">Save</button>
             </div>
           </div>
         </div>
