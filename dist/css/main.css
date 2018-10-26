@@ -25,7 +25,7 @@ p {
 
 /*------------- app -------------*/
 .container {
-	max-width: 500px;
+	max-width: 700px;
 	margin: 20px auto;
 	border: 1px solid grey;
 }
@@ -47,6 +47,11 @@ p {
 /*------------- winner__section -------------*/
 .winner__col_user-name {
 	width: 100%;
+}
+
+#winner__user-name>span {
+	font-weight: bold;
+	cursor: pointer;
 }
 
 #winner__button {
@@ -119,8 +124,12 @@ p {
 	padding-right: 0 !important;
 }
 
-#form__button {
+#reg-form__section button {
 	width: 80px;
+}
+
+#form__clear-button {
+	margin-right: 20px;
 }
 
 @media (max-width: 400px){
@@ -149,6 +158,10 @@ p {
 	.warning__messages {
 		text-align: left;
 	}
+
+	#reg-form__section button {
+		width: auto;
+	}
 }
 
 
@@ -173,6 +186,10 @@ p {
 
 .result-table__row:first-of-type .result-table__col {
 	border-bottom: 1px solid grey;
+}
+
+.result-table__col_table-item {
+	cursor: pointer;
 }
 
 @media (max-width: 400px){

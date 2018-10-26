@@ -1,38 +1,33 @@
-function log(item) {
-  console.log(item);
-}
-
-
-
+// Переменные
 const formItems = ['name', 'surname', 'email', 'phone', 'birthday'];
 let usersDB = [];
 let state = {
-  currentUserId: null,
+  winnerId: null,
   inputError: false,
   formDirty: false
 };
 
 
-
-let emailHandler = function() {
+const emailHandler = function() {
   // Дополнительное событие на input
   checkInput('email');
 }
 
-let phoneHandler = function() {
+const phoneHandler = function() {
   // Дополнительное событие на input
   checkInput('phone');
 }
 
-let birthdayHandler = function() {
+const birthdayHandler = function() {
   // Дополнительное событие на input
   checkInput('birthday');
 }
 
+
 function checkInput(item) {
   // Проверяем конкретный Input формы
   state.formDirty = true;
-  let value = document.getElementById(`reg-form__user-${item}_input`).value;
+  const value = getDOMInputValue(item);
   switch(item) {
     case 'name':
     case 'surname':
@@ -110,12 +105,11 @@ function checkInput(item) {
 function checkForm() {
   // Проверить всю форму при клике на кнопку Save
   formItems.slice(0, 3).forEach( item => checkInput(item) );
-  return false;
 }
 
 function showInputError(item, messageText) {
   // Показать ошибку на Input'e
-  let obj = getDOMObjects(item);
+  const obj = getDOMObjects(item);
   obj.message.textContent = messageText;
   obj.message.classList.remove('hide');
   obj.target.classList.add('input-error');
@@ -126,7 +120,7 @@ function showInputError(item, messageText) {
 
 function hideInputError(item) {
   // Убрать ошибку на Input'e
-  let obj = getDOMObjects(item);
+  const obj = getDOMObjects(item);
   obj.message.classList.add('hide');
   obj.target.classList.remove('input-error');
   obj.button.classList.remove('button-disabled')
@@ -135,48 +129,55 @@ function hideInputError(item) {
 }
 
 function getDOMObjects(item) {
-  // Находим текущие эл-ты в DOM'e форме
-  let message = document.getElementById(`reg-form__user-${item}_message`);
-  let target = document.getElementById(`reg-form__user-${item}_input`);
-  let button = document.getElementById('form__button');
-  return {message, target, button};
+  // Находим текущие эл-ты в DOM'e
+  if (item) {
+    const message = document.getElementById(`reg-form__user-${item}_message`);
+    const target = document.getElementById(`reg-form__user-${item}_input`);
+    const button = document.getElementById('form__button');
+    return {message, target, button};
+  } else {
+    return document.getElementById('winner__user-name');
+  }
 }
 
-function getInputItem(item) {
-  return document.getElementById(`reg-form__user-${item}_input`);
+function getDOMInputValue(item) {
+  // Получить нужный input эл-нт формы
+  return document.getElementById(`reg-form__user-${item}_input`).value;
 }
 
 function saveToUsersDB(userId) {
+  // Сохранить изменения данных user'a
   if ( userId ) {
     usersDB[userId-1] = {
       id: userId,
-      name: getInputItem(formItems[0]).value,
-      surname: getInputItem(formItems[1]).value,
-      email: getInputItem(formItems[2]).value,
-      phone: getInputItem(formItems[3]).value,
-      birthday: getInputItem(formItems[4]).value,
+      name: capitalizeFirstLetter(getDOMInputValue(formItems[0])),
+      surname: capitalizeFirstLetter(getDOMInputValue(formItems[1])),
+      email: getDOMInputValue(formItems[2]),
+      phone: getDOMInputValue(formItems[3]),
+      birthday: getDOMInputValue(formItems[4]),
     };
   } else {
     let userObj = {
-      id: usersDB.length+1,
-      name: capitalizeFirstLetter(getInputItem(formItems[0]).value),
-      surname: capitalizeFirstLetter(getInputItem(formItems[1]).value),
-      email: getInputItem(formItems[2]).value,
-      phone: getInputItem(formItems[3]).value,
-      birthday: getInputItem(formItems[4]).value,
+      id: usersDB.length + 1,
+      name: capitalizeFirstLetter(getDOMInputValue(formItems[0])),
+      surname: capitalizeFirstLetter(getDOMInputValue(formItems[1])),
+      email: getDOMInputValue(formItems[2]),
+      phone: getDOMInputValue(formItems[3]),
+      birthday: getDOMInputValue(formItems[4]),
     };
     usersDB.push(userObj);
   }
-  return false;
 }
 
 function saveUserButtonClick(userId) {
-  if ( state.formDirty && getInputItem('name').value.length ) {
-    checkForm();
-    if (!state.inputError) {
-      saveToUsersDB(userId);
-      renderView('result-table');
-      renderView('reg-form');
+  // Клик на кнопку Save под формой
+  checkForm();
+  if ( state.formDirty && !state.inputError ) {
+    saveToUsersDB(userId);
+    renderView('result-table');
+    renderView('reg-form');
+    if ( state.winnerId === userId ) {
+      getDOMObjects().firstChild.textContent = usersDB[userId-1].name + ' ' + usersDB[userId-1].surname;
     }
   } else if (userId) {
     renderView('reg-form');
@@ -185,6 +186,7 @@ function saveUserButtonClick(userId) {
 }
 
 function renderView(view) {
+  // Изменить view
   const target = document.getElementById(`${view}__section`);
   switch(view) {
     case 'reg-form':
@@ -194,7 +196,7 @@ function renderView(view) {
           <div class="container reg-form__container">
             <div class="row reg-form__row reg-form__row_form-title">
               <div class="col reg-form__col reg-form__col_form-title">
-                <p class="reg-form__title" onclick="log(usersDB)">Registration form</p>
+                <p class="reg-form__title">Registration form</p>
               </div>
             </div>
             <div class="row reg-form__row reg-form__row_form-item">
@@ -246,15 +248,13 @@ function renderView(view) {
           <div class="container reg-form__container_button">
             <div class="row reg-form__row reg-form__row_form-button">
               <div class="col reg-form__col reg-form__col_form-button">
+                <button id="form__clear-button" onclick="return clearFormButtonClick()">Clear</button>
                 <button id="form__button" onclick="return saveUserButtonClick()">Save</button>
               </div>
             </div>
           </div>
         </form>
       `;
-      /*if ( userId ) {
-        setInputs(userId);
-      }*/
       break;
     case 'result-table':
       let table = '';
@@ -277,7 +277,7 @@ function renderView(view) {
               <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.birthday}</p>
             </div>
           </div>
-        `
+        `;
       });
       target.innerHTML = `
         <div class="container result-table__container">
@@ -300,48 +300,90 @@ function renderView(view) {
           </div>
           ${table}
         </div>
-      `
+      `;
       break;
   }
 }
 
 function itemResultTableClick(id) {
+  // Клик на эл-нт в таблице всех пользователей
   renderView('reg-form');
   setInputs(id);
-  state.currentUserId = id;
 }
 
 function setInputs(userId) {
+  // Заполнить input'ы данными из базы пользователей
   formItems.forEach( item => {
-    const obj = getDOMObjects(item);
-    obj.target.value = usersDB[userId-1][item];
+    getDOMObjects(item).target.value = usersDB[userId-1][item];
   });
   document.getElementById('form__button').setAttribute('onclick', `return saveUserButtonClick(${userId})`);
 }
 
 function onFirstLoad() {
+  // Отобразить форму и таблицу при загрузке страницы
   renderView('reg-form');
   renderView('result-table');
 }
 
 function capitalizeFirstLetter(string) {
+  // Сделать первую букву заглавной
   return string[0].toUpperCase() + string.slice(1);
 }
 
+function clearFormButtonClick() {
+  // Клик на кнопку Clear формы для её очистки
+  renderView('reg-form');
+  return false;
+}
 
-usersDB = [{
-  id: 1,
-  name: 'Andrey',
-  surname: 'Evgenich',
-  email: 'andru@gmail.com',
-  phone: '+380951234567',
-  birthday: '12/12/2009',
-},
-{
-  id: 2,
-  name: 'Oleg',
-  surname: 'Batkovich',
-  email: 'oleg@gmail.com',
-  phone: '+380951234567',
-  birthday: '02/02/2012',
-}];
+function newWinnerButtonClick() {
+  // Клик на кнопку New winner
+  const randomId = Math.ceil(Math.random()*usersDB.length);
+  state.winnerId = randomId;
+  getDOMObjects().innerHTML = `<span onclick="itemResultTableClick(${randomId})">${usersDB[randomId-1].name} ${usersDB[randomId-1].surname}</span>`;
+}
+
+
+// Первоначальные тестовые пользовательские данные для примера
+usersDB = [
+  {
+    id: 1,
+    name: 'Test1',
+    surname: 'User1',
+    email: 'mail1@mail.com',
+    phone: '+380501111111',
+    birthday: '01/01/2001',
+  },
+  {
+    id: 2,
+    name: 'Test2',
+    surname: 'User2',
+    email: 'mail2@mail.com',
+    phone: '+380502222222',
+    birthday: '02/02/2002',
+  },
+  {
+    id: 3,
+    name: 'Test3',
+    surname: 'User3',
+    email: 'mail3@mail.com',
+    phone: '+380503333333',
+    birthday: '03/03/2003',
+  },
+  {
+    id: 4,
+    name: 'Test4',
+    surname: 'User4',
+    email: 'mail4@mail.com',
+    phone: '+380504444444',
+    birthday: '04/04/2004',
+  },
+  {
+    id: 5,
+    name: 'Test5',
+    surname: 'User5',
+    email: 'mail5@mail.com',
+    phone: '+380505555555',
+    birthday: '05/05/2005',
+  }
+];
