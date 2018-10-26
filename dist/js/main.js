@@ -139,13 +139,90 @@ function getInputItem(item) {
 }
 
 function saveToUsersDB() {
-  log('ok');
-  debugger;
-  let obj = {
+  let userObj = {
     id: usersDB.length+1,
-    name: [getInputItem(item)].value,
+    name: getInputItem(formItems[0]).value,
+    surname: getInputItem(formItems[1]).value,
+    email: getInputItem(formItems[2]).value,
+    phone: getInputItem(formItems[3]).value,
+    birthday: getInputItem(formItems[4]).value,
   };
-  usersDB.push(obj);
+  usersDB.push(userObj);
   return false;
 }
 
+function saveUserButtonClick() {
+  saveToUsersDB();
+  renderView('result-table');
+  return false;
+}
+
+function renderView(view) {
+  const target = document.getElementById(`${view}__section`);
+  switch(view) {
+    case 'result-table':
+      let table = '';
+      usersDB.forEach( item => {
+        table += `
+          <div class="row result-table__row result-table__row_table-item">
+            <div class="col result-table__col result-table__col_table-item">
+              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.name}</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-item">
+              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.surname}</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-item">
+              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.email}</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-item">
+              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.phone}</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-item">
+              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.birthday}</p>
+            </div>
+          </div>
+        `
+      });
+      target.innerHTML = `
+        <div class="container result-table__container">
+          <div class="row result-table__row result-table__row_table-title">
+            <div class="col result-table__col result-table__col_table-title">
+              <p class="result-table__title">Name</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-title">
+              <p class="result-table__title">Surname</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-title">
+              <p class="result-table__title">Email</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-title">
+              <p class="result-table__title">Phone</p>
+            </div>
+            <div class="col result-table__col result-table__col_table-title">
+              <p class="result-table__title">Birthday</p>
+            </div>
+          </div>
+          ${table}
+        </div>
+      `
+      break;
+  }
+}
+
+
+usersDB = [{
+  id: 1,
+  name: 'Andrey',
+  surname: 'Evgenich',
+  email: 'andru@gmail.com',
+  phone: '+380951234567',
+  birthday: '12/12/2009',
+},
+{
+  id: 2,
+  name: 'Oleg',
+  surname: 'Batkovich',
+  email: 'oleg@gmail.com',
+  phone: '+380951234567',
+  birthday: '02/02/2012',
+}];

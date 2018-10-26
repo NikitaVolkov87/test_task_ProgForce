@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" href="dist/css/main.css">
 </head>
-<body onload="">
+<body onload="renderView('result-table')">
 
 
 	<div class="app">
@@ -81,14 +81,14 @@
         <div class="container reg-form__container_button">
           <div class="row reg-form__row reg-form__row_form-button">
             <div class="col reg-form__col reg-form__col_form-button">
-              <button id="form__button" onclick="return saveToUsersDB()">Save</button>
+              <button id="form__button" onclick="return saveUserButtonClick()">Save</button>
             </div>
           </div>
         </div>
       </form>
     </section>
 
-    <section class="result-table__section">
+    <section id="result-table__section">
       <div class="container result-table__container">
         <div class="row result-table__row result-table__row_table-title">
           <div class="col result-table__col result-table__col_table-title">
@@ -141,7 +141,6 @@
             <p class="result-table__item" onclick="itemResultTableClick('id')">birthday</p>
           </div>
         </div>
-        
       </div>
     </section>
     
