@@ -2,8 +2,26 @@ function log(item) {
   console.log(item);
 }
 
-let handler = function() {
+
+
+const formItems = ['name', 'surname', 'email', 'phone', 'birthday'];
+let usersDB = [];
+
+
+
+let emailHandler = function() {
+  // Дополнительное событие на input
   checkInput('email');
+}
+
+let phoneHandler = function() {
+  // Дополнительное событие на input
+  checkInput('phone');
+}
+
+let birthdayHandler = function() {
+  // Дополнительное событие на input
+  checkInput('birthday');
 }
 
 function checkInput(item) {
@@ -21,11 +39,9 @@ function checkInput(item) {
       }
       break;
     case 'email':
-      let email = document.getElementById(`reg-form__user-${item}_input`);
-      let emailLiveCheck = email.getAttribute('liveCheck');
-      if ( emailLiveCheck === 'false' ) {
-        email.addEventListener("input", handler);
-        email.setAttribute('liveCheck', 'true');
+      if ( event.target.getAttribute('liveCheck') === 'false' ) {
+        event.target.addEventListener("input", emailHandler);
+        event.target.setAttribute('liveCheck', 'true');
       }
       if ( value === '' ) {
         showInputError(item, 'Обязательное поле');
@@ -34,13 +50,60 @@ function checkInput(item) {
       } else {
         hideInputError(item);
       }
+      break;
+    case 'phone':
+      if ( event.target.value === '+380' && document.activeElement !== event.target ) {
+        event.target.value = '';
+        hideInputError(item);
+      } else if ( event.target.value === '' && document.activeElement === event.target ) {
+        event.target.value = '+380';
+        hideInputError(item);
+      } else if ( !(/^\d+$/.test(value.slice(1))) ) {
+        showInputError(item, 'Допускаются только цифры');
+      } else if ( value.length !== 13 ) {
+        if ( value.length > 4 ) {
+          showInputError(item, 'Неверный номер телефона');
+          if ( event.target.getAttribute('liveCheck') === 'false' ) {
+            event.target.addEventListener("input", phoneHandler);
+            event.target.setAttribute('liveCheck', 'true');
+          }
+        }
+      } else {
+        hideInputError(item);
+        if ( event.target.getAttribute('liveCheck') === 'true' ) {
+          event.target.removeEventListener("input", phoneHandler);
+          event.target.setAttribute('liveCheck', 'false');
+        }
+      }
+      break;
+    case 'birthday':
+      if ( value === '' ) {
+        event.target.value = 'дд/мм/гггг';
+        event.target.select();
+        hideInputError(item);
+      } else if ( value === 'дд/мм/гггг' ) {
+        event.target.value = '';
+        hideInputError(item);
+      } else if ( !/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(value) ) {
+        showInputError(item, 'Дата введена неправильно');
+        if ( event.target.getAttribute('liveCheck') === 'false' ) {
+          event.target.addEventListener("input", birthdayHandler);
+          event.target.setAttribute('liveCheck', 'true');
+        }
+      } else {
+        hideInputError(item);
+        if ( event.target.getAttribute('liveCheck') === 'true' ) {
+          event.target.removeEventListener("input", birthdayHandler);
+          event.target.setAttribute('liveCheck', 'false');
+        }
+      }
+      break;
   }
 }
 
 function checkForm() {
   // Проверить всю форму при клике на кнопку Save
-  let items = ['name', 'surname', 'email', 'phone', 'birthday'];
-  items.forEach( item => checkInput(item) );
+  formItems.slice(0, 3).forEach( item => checkInput(item) );
   return false;
 }
 
@@ -70,3 +133,19 @@ function getDOMObjects(item) {
   let button = document.getElementById('form__button');
   return {message, target, button};
 }
+
+function getInputItem(item) {
+  return document.getElementById(`reg-form__user-${item}_input`);
+}
+
+function saveToUsersDB() {
+  log('ok');
+  debugger;
+  let obj = {
+    id: usersDB.length+1,
+    name: [getInputItem(item)].value,
+  };
+  usersDB.push(obj);
+  return false;
+}
+

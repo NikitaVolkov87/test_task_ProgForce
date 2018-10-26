@@ -29,7 +29,7 @@
         <div class="container reg-form__container">
           <div class="row reg-form__row reg-form__row_form-title">
             <div class="col reg-form__col reg-form__col_form-title">
-              <p class="reg-form__title">Registration form</p>
+              <p class="reg-form__title" onclick="log(usersDB)">Registration form</p>
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -65,7 +65,7 @@
             </div>
             <div class="col reg-form__col reg-form__col_user-phone_input">
               <p class="warning__messages hide" id="reg-form__user-phone_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-phone_input" type="text" oninput="checkInput('phone')" onblur="checkInput('phone')" onclick="event.target.select()">
+              <input class="reg-form__input" id="reg-form__user-phone_input" type="text" onblur="checkInput('phone')" onclick="checkInput('phone')" liveCheck="false">
             </div>
           </div>
           <div class="row reg-form__row reg-form__row_form-item">
@@ -74,14 +74,14 @@
             </div>
             <div class="col reg-form__col reg-form__col_user-birthday_input">
               <p class="warning__messages hide" id="reg-form__user-birthday_message">Обязательное поле</p>
-              <input class="reg-form__input" id="reg-form__user-birthday_input" type="text" oninput="checkInput('birthday')" onblur="checkInput('birthday')" onclick="event.target.select()">
+              <input class="reg-form__input" id="reg-form__user-birthday_input" type="text" onblur="checkInput('birthday')" onclick="checkInput('birthday')" liveCheck="false">
             </div>
           </div>
         </div>
         <div class="container reg-form__container_button">
           <div class="row reg-form__row reg-form__row_form-button">
             <div class="col reg-form__col reg-form__col_form-button">
-              <button id="form__button" onclick="return checkForm()">Save</button>
+              <button id="form__button" onclick="return saveToUsersDB()">Save</button>
             </div>
           </div>
         </div>
