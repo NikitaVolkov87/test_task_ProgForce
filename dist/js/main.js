@@ -6,6 +6,9 @@ function log(item) {
 
 const formItems = ['name', 'surname', 'email', 'phone', 'birthday'];
 let usersDB = [];
+let params = {
+  currentUserId: null
+};
 
 
 
@@ -138,21 +141,34 @@ function getInputItem(item) {
   return document.getElementById(`reg-form__user-${item}_input`);
 }
 
-function saveToUsersDB() {
-  let userObj = {
-    id: usersDB.length+1,
-    name: getInputItem(formItems[0]).value,
-    surname: getInputItem(formItems[1]).value,
-    email: getInputItem(formItems[2]).value,
-    phone: getInputItem(formItems[3]).value,
-    birthday: getInputItem(formItems[4]).value,
-  };
-  usersDB.push(userObj);
+function saveToUsersDB(userId) {
+  if ( userId ) {
+    usersDB[userId-1] = {
+      id: userId,
+      name: getInputItem(formItems[0]).value,
+      surname: getInputItem(formItems[1]).value,
+      email: getInputItem(formItems[2]).value,
+      phone: getInputItem(formItems[3]).value,
+      birthday: getInputItem(formItems[4]).value,
+    };
+  } else {
+    let userObj = {
+      id: usersDB.length+1,
+      name: getInputItem(formItems[0]).value,
+      surname: getInputItem(formItems[1]).value,
+      email: getInputItem(formItems[2]).value,
+      phone: getInputItem(formItems[3]).value,
+      birthday: getInputItem(formItems[4]).value,
+    };
+    usersDB.push(userObj);
+  }
   return false;
 }
 
-function saveUserButtonClick() {
-  saveToUsersDB();
+function saveUserButtonClick(userId) {
+  log('userId -> ' + userId);
+  checkForm();
+  saveToUsersDB(userId);
   renderView('result-table');
   return false;
 }
@@ -160,25 +176,93 @@ function saveUserButtonClick() {
 function renderView(view) {
   const target = document.getElementById(`${view}__section`);
   switch(view) {
+    case 'reg-form':
+      target.innerHTML = `
+        <form action="">
+          <div class="container reg-form__container">
+            <div class="row reg-form__row reg-form__row_form-title">
+              <div class="col reg-form__col reg-form__col_form-title">
+                <p class="reg-form__title" onclick="log(usersDB)">Registration form</p>
+              </div>
+            </div>
+            <div class="row reg-form__row reg-form__row_form-item">
+              <div class="col reg-form__col reg-form__col_user-name_p">
+                <p class="reg-form__input-title">Name: </p>
+              </div>
+              <div class="col reg-form__col reg-form__col_user-name_input">
+                <p class="warning__messages hide" id="reg-form__user-name_message">Обязательное поле</p>
+                <input class="reg-form__input" id="reg-form__user-name_input" type="text" oninput="checkInput('name')" onblur="checkInput('name')" onclick="event.target.select()">
+              </div>
+            </div>
+            <div class="row reg-form__row reg-form__row_form-item">
+              <div class="col reg-form__col reg-form__col_user-surname_p">
+                <p class="reg-form__input-title">Surname: </p>
+              </div>
+              <div class="col reg-form__col reg-form__col_user-surname_input">
+                <p class="warning__messages hide" id="reg-form__user-surname_message">Обязательное поле</p>
+                <input class="reg-form__input" id="reg-form__user-surname_input" type="text" oninput="checkInput('surname')" onblur="checkInput('surname')" onclick="event.target.select()">
+              </div>
+            </div>
+            <div class="row reg-form__row reg-form__row_form-item">
+              <div class="col reg-form__col reg-form__col_user-email_p">
+                <p class="reg-form__input-title">Email: </p>
+              </div>
+              <div class="col reg-form__col reg-form__col_user-email_input">
+                <p class="warning__messages hide" id="reg-form__user-email_message">Обязательное поле</p>
+                <input class="reg-form__input" id="reg-form__user-email_input" type="text" onblur="checkInput('email')" onclick="event.target.select()" liveCheck="false">
+              </div>
+            </div>
+            <div class="row reg-form__row reg-form__row_form-item">
+              <div class="col reg-form__col reg-form__col_user-phone_p">
+                <p class="reg-form__input-title">Phone: </p>
+              </div>
+              <div class="col reg-form__col reg-form__col_user-phone_input">
+                <p class="warning__messages hide" id="reg-form__user-phone_message">Обязательное поле</p>
+                <input class="reg-form__input" id="reg-form__user-phone_input" type="text" onblur="checkInput('phone')" onclick="checkInput('phone')" liveCheck="false">
+              </div>
+            </div>
+            <div class="row reg-form__row reg-form__row_form-item">
+              <div class="col reg-form__col reg-form__col_user-birthday_p">
+                <p class="reg-form__input-title">Birthday: </p>
+              </div>
+              <div class="col reg-form__col reg-form__col_user-birthday_input">
+                <p class="warning__messages hide" id="reg-form__user-birthday_message">Обязательное поле</p>
+                <input class="reg-form__input" id="reg-form__user-birthday_input" type="text" onblur="checkInput('birthday')" onclick="checkInput('birthday')" liveCheck="false">
+              </div>
+            </div>
+          </div>
+          <div class="container reg-form__container_button">
+            <div class="row reg-form__row reg-form__row_form-button">
+              <div class="col reg-form__col reg-form__col_form-button">
+                <button id="form__button" onclick="return saveUserButtonClick()">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      `;
+      /*if ( userId ) {
+        setInputs(userId);
+      }*/
+      break;
     case 'result-table':
       let table = '';
       usersDB.forEach( item => {
         table += `
           <div class="row result-table__row result-table__row_table-item">
             <div class="col result-table__col result-table__col_table-item">
-              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.name}</p>
+              <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.name}</p>
             </div>
             <div class="col result-table__col result-table__col_table-item">
-              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.surname}</p>
+              <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.surname}</p>
             </div>
             <div class="col result-table__col result-table__col_table-item">
-              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.email}</p>
+              <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.email}</p>
             </div>
             <div class="col result-table__col result-table__col_table-item">
-              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.phone}</p>
+              <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.phone}</p>
             </div>
             <div class="col result-table__col result-table__col_table-item">
-              <p class="result-table__item" onclick="itemResultTableClick('id')">${item.birthday}</p>
+              <p class="result-table__item" onclick="itemResultTableClick(${item.id})">${item.birthday}</p>
             </div>
           </div>
         `
@@ -207,6 +291,25 @@ function renderView(view) {
       `
       break;
   }
+}
+
+function itemResultTableClick(id) {
+  log(id);
+  setInputs(id);
+  params.currentUserId = id;
+}
+
+function setInputs(userId) {
+  formItems.forEach( item => {
+    const obj = getDOMObjects(item);
+    obj.target.value = usersDB[userId-1][item];
+  });
+  document.getElementById('form__button').setAttribute('onclick', `return saveUserButtonClick(${userId})`);
+}
+
+function onFirstLoad() {
+  renderView('reg-form');
+  renderView('result-table');
 }
 
 
