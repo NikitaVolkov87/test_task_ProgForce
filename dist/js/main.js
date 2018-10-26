@@ -6,8 +6,10 @@ function log(item) {
 
 const formItems = ['name', 'surname', 'email', 'phone', 'birthday'];
 let usersDB = [];
-let params = {
-  currentUserId: null
+let state = {
+  currentUserId: null,
+  inputError: false,
+  formDirty: false
 };
 
 
@@ -29,6 +31,7 @@ let birthdayHandler = function() {
 
 function checkInput(item) {
   // Проверяем конкретный Input формы
+  state.formDirty = true;
   let value = document.getElementById(`reg-form__user-${item}_input`).value;
   switch(item) {
     case 'name':
@@ -118,6 +121,7 @@ function showInputError(item, messageText) {
   obj.target.classList.add('input-error');
   obj.button.classList.add('button-disabled');
   obj.button.setAttribute('disabled', '');
+  state.inputError = true;
 }
 
 function hideInputError(item) {
@@ -127,6 +131,7 @@ function hideInputError(item) {
   obj.target.classList.remove('input-error');
   obj.button.classList.remove('button-disabled')
   obj.button.removeAttribute('disabled');
+  state.inputError = false;
 }
 
 function getDOMObjects(item) {
@@ -154,8 +159,8 @@ function saveToUsersDB(userId) {
   } else {
     let userObj = {
       id: usersDB.length+1,
-      name: getInputItem(formItems[0]).value,
-      surname: getInputItem(formItems[1]).value,
+      name: capitalizeFirstLetter(getInputItem(formItems[0]).value),
+      surname: capitalizeFirstLetter(getInputItem(formItems[1]).value),
       email: getInputItem(formItems[2]).value,
       phone: getInputItem(formItems[3]).value,
       birthday: getInputItem(formItems[4]).value,
@@ -166,10 +171,16 @@ function saveToUsersDB(userId) {
 }
 
 function saveUserButtonClick(userId) {
-  log('userId -> ' + userId);
-  checkForm();
-  saveToUsersDB(userId);
-  renderView('result-table');
+  if ( state.formDirty && getInputItem('name').value.length ) {
+    checkForm();
+    if (!state.inputError) {
+      saveToUsersDB(userId);
+      renderView('result-table');
+      renderView('reg-form');
+    }
+  } else if (userId) {
+    renderView('reg-form');
+  }
   return false;
 }
 
@@ -177,6 +188,7 @@ function renderView(view) {
   const target = document.getElementById(`${view}__section`);
   switch(view) {
     case 'reg-form':
+      state.formDirty = false;
       target.innerHTML = `
         <form action="">
           <div class="container reg-form__container">
@@ -294,9 +306,9 @@ function renderView(view) {
 }
 
 function itemResultTableClick(id) {
-  log(id);
+  renderView('reg-form');
   setInputs(id);
-  params.currentUserId = id;
+  state.currentUserId = id;
 }
 
 function setInputs(userId) {
@@ -310,6 +322,10 @@ function setInputs(userId) {
 function onFirstLoad() {
   renderView('reg-form');
   renderView('result-table');
+}
+
+function capitalizeFirstLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
 }
 
 
